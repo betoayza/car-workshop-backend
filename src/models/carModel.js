@@ -7,17 +7,15 @@ const conn = mongoose.createConnection(URI);
 
 conn.once('open', () => {
     console.log('Connected to MongoDB');
-});
-                          
-//const connection = mongoose.connect(URI)
-//                            .then(db => console.log('DB conectada!'))
-//                            .catch(error => console.log("El error es: ", error));
+});             
 
 const carSchema = new Schema ({
-    patent: {type: Number, required: true},
+    code: {type: Number, required: true},
+    patent: {type: String, required: true},
     brand: {type: String, required: true},
     model: {type: String, required: true},
-    year: {type: Number, required: true}    
+    year: {type: Number, required: true},
+    owner: {type: String, required: true}    
 },
 {
     collection: 'cars' 

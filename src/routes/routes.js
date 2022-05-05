@@ -40,13 +40,30 @@ router.get("/cars/searchCar/lists/carlist1", async (req, res) => {
   }
 });
 
-router.post("/cars/addCar", async (req, res) => {
+router.post("/cars/add", async (req, res) => {
   try {
-    const obj = req.body;
-    const result = CarModel.save(obj); //La coleccion ya está incluida en la definicion del modelo Car
-    result.json();
+    const { code, patent, brand, model, year, owner } = req.body;
+    const carData = { code, patent, brand, model, year, owner };
+    //console.log(patent);
+    const newCar = new CarModel(carData);
+    //console.log(newCar);
+    const result = await newCar.save(); //La coleccion ya está incluida en la definicion del modelo Car
+    console.log(result);
+    res.json(result);
   } catch (error) {
     console.log("El error es: ", error);
+  }
+});
+
+router.delete("/cars/delete", async (req, res) => {
+  try {
+    console.log(req.body);
+    const { code } = req.body;
+    const doc = await CarModel.deleteOne({code});
+    console.log(doc);
+    res.json(doc);
+  } catch (error) {
+    console.log("El error es: ", error)
   }
 });
 
