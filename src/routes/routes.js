@@ -59,12 +59,14 @@ router.delete("/cars/delete", async (req, res) => {
   try {
     console.log(req.body);
     const { code } = req.body;
-    const doc = await CarModel.deleteOne({code});
+    const doc = await CarModel.deleteOne({ code });
     console.log(doc);
     res.json(doc);
   } catch (error) {
-    console.log("El error es: ", error)
+    console.log("El error es: ", error);
   }
 });
 
 export default router;
+
+//asdasdasd
