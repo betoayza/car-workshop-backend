@@ -67,6 +67,34 @@ router.delete("/cars/delete", async (req, res) => {
   }
 });
 
-export default router;
+router.get("/cars/getCar", async (req, res) => {
+  try {
+    //console.log(req.query.code);
+    const code = req.query.code;
+    console.log(code);
+    const doc = await CarModel.findOne({ code }).exec();
+    console.log(doc);
+    res.json(doc);
+  } catch (error) {
+    console.error(error);
+  }
+});
 
-//asdasdasd
+router.put("/cars/modify/edit", async (req, res) => {
+  try {
+    const {code, patent, brand, model, year, owner} = req.body.form;    
+    const doc = await CarModel.findOne({code}).exec();
+    doc.patent=patent;
+    doc.brand=brand;
+    doc.model=model;
+    doc.year=year;
+    doc.owner=owner;
+    const doc2=await doc.save();
+    console.log("Data updated!: ", doc2);
+    res.json(doc2);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+export default router;

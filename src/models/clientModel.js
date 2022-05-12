@@ -11,6 +11,7 @@ conn.once('open', () => {
 });
 
 const ClientSchema = new Schema({    
+    code: {type: Number, required: true},
     name: {type: String, required: true},
     lastName: {type: String, required: true},
     dni: {type: Number, required: true},
