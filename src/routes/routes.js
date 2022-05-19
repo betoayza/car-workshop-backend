@@ -1,13 +1,13 @@
 import { Router } from "express";
 import mongoose from "mongoose";
 import CarModel from "../models/carModel.js";
-import ClientModel from "../models/clientModel.js";
+import UserModel from "../models/userModel.js";
 import ServiceModel from "../models/serviceModel.js";
 
 const router = Router();
 
 //router for  list with all cars with more 3 years old and just 1 service done
-router.get("/cars/searchCar/lists/carlist1", async (req, res) => {
+router.get("/cars/search/lists/carlist1", async (req, res) => {
   try {
     //filter car fabrication year < 2017  ( =< 4 years)
     const list1 = await CarModel.find({ year: { $lt: 2017 } }); //.exec()
@@ -38,6 +38,10 @@ router.get("/cars/searchCar/lists/carlist1", async (req, res) => {
   } catch (error) {
     console.log("El error es: ", error);
   }
+});
+
+router.get("/cars/search/brand-model", (req, res) => {
+  const { brand, model } = req.query;
 });
 
 router.post("/cars/add", async (req, res) => {
@@ -82,18 +86,39 @@ router.get("/cars/getCar", async (req, res) => {
 
 router.put("/cars/modify/edit", async (req, res) => {
   try {
-    const {code, patent, brand, model, year, owner} = req.body.form;    
-    const doc = await CarModel.findOne({code}).exec();
-    doc.patent=patent;
-    doc.brand=brand;
-    doc.model=model;
-    doc.year=year;
-    doc.owner=owner;
-    const doc2=await doc.save();
+    const { code, patent, brand, model, year, owner } = req.body.form;
+    const doc = await CarModel.findOne({ code }).exec();
+    doc.patent = patent;
+    doc.brand = brand;
+    doc.model = model;
+    doc.year = year;
+    doc.owner = owner;
+    const doc2 = await doc.save();
     console.log("Data updated!: ", doc2);
     res.json(doc2);
   } catch (error) {
     console.error(error);
+  }
+});
+
+//Sigup just exists for Admins
+router.post("/signup", async (req, res) => {
+  try {
+    console.log(req.body.form);
+    const { id, email, username } = req.body;
+    //validate user
+    let doc = await UserModel.find({ $or: [{ id }, { email }, { username }] });
+    if (!doc.length) {
+      //add admin
+      const newUser = new UserModel(req.body);
+      doc = await newUser.save();
+      console.log("*", doc);
+      res.json(doc);
+    }else{
+      res.json({})
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 
