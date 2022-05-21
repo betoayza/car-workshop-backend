@@ -9,23 +9,21 @@ conn.once("open", () => {
   console.log("Connected to MongoDB");
 });
 
-const UserSchema = new Schema(
+const ClientSchema = new Schema(
   {    
+    code: { type: Number, required: true }, 
     id: { type: Number, required: true },
     name: { type: String, required: true },
     surname: { type: String, required: true },
-    email: { type: String, required: true },
-    username: { type: String, required: true },
-    password: { type: String, required: true },
-    phone: { type: Number, required: true },
-    type: { type: String, required: true },
+    email: { type: String, required: true },    
+    phone: { type: Number, required: true },   
     status: { type: String, required: true },
   },
   {
-    collection: "users",
+    collection: "clients",
   }
 );
 
-const UserModel = conn.model("UserModel", UserSchema);
+const ClientModel = conn.model("ClientModel", ClientSchema);
 
-export default UserModel;
+export default ClientModel;

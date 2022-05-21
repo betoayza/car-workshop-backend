@@ -1,7 +1,7 @@
 import { Router } from "express";
 import mongoose from "mongoose";
 import CarModel from "../models/carModel.js";
-import UserModel from "../models/userModel.js";
+import ClientModel from "../models/clientModel.js";
 import ServiceModel from "../models/serviceModel.js";
 
 const router = Router();
@@ -104,21 +104,42 @@ router.put("/cars/modify/edit", async (req, res) => {
 //Sigup just exists for Admins
 router.post("/signup", async (req, res) => {
   try {
-    console.log(req.body.form);
+    console.log(req.body);
     const { id, email, username } = req.body;
     //validate user
-    let doc = await UserModel.find({ $or: [{ id }, { email }, { username }] });
+    let doc = await ClientModel.find({
+      $or: [{ id }, { email }, { username }],
+    });
     if (!doc.length) {
       //add admin
-      const newUser = new UserModel(req.body);
+      const newUser = new ClientModel(req.body);
       doc = await newUser.save();
       console.log("*", doc);
       res.json(doc);
-    }else{
-      res.json({})
+    } else {
+      res.json({});
     }
   } catch (error) {
     console.log(error);
+  }
+});
+//-----------------CLIENTS
+router.post("/clients/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const {code, id, email}=req.body;
+    const newClient = new ClientModel(req.body);
+    let doc = await ClientModel.find({ $or: [{ code }, { id }, { email }] });
+    //Si no hay coincidencias, efectua el alta
+    if (!doc.length) {
+      doc = await newClient.save();
+      res.json(doc);
+    } else {
+      //si hay coincidencias, no se da el alta
+      res.json({});
+    }
+  } catch (error) {
+    console.error(error);
   }
 });
 
