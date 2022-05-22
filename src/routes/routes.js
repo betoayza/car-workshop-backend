@@ -143,4 +143,15 @@ router.post("/clients/add", async (req, res) => {
   }
 });
 
+router.delete('/clients/delete/:code', async (req, res)=>{
+  try{
+    console.log(req.params.code);
+    const code=req.params.code;
+    let doc=await ClientModel.findOneAndDelete({code});
+    res.json(doc);    
+  }catch(error){
+    console.error(error);
+  }
+});
+
 export default router;
