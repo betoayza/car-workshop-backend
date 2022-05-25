@@ -36,7 +36,7 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
     console.log("Resultado final: ", result);
     res.json(result);
   } catch (error) {
-    console.log("El error es: ", error);
+    console.error(error);
   }
 });
 
@@ -46,37 +46,41 @@ router.get("/cars/search/brand-model", (req, res) => {
 
 router.post("/cars/add", async (req, res) => {
   try {
-    const { code, patent, brand, model, year, owner } = req.body;
-    const carData = { code, patent, brand, model, year, owner };
-    //console.log(patent);
-    const newCar = new CarModel(carData);
-    //console.log(newCar);
-    const result = await newCar.save(); //La coleccion ya está incluida en la definicion del modelo Car
-    console.log(result);
-    res.json(result);
-  } catch (error) {
-    console.log("El error es: ", error);
-  }
-});
-
-router.delete("/cars/delete", async (req, res) => {
-  try {
     console.log(req.body);
-    const { code } = req.body;
-    const doc = await CarModel.deleteOne({ code });
+    const newCar = new CarModel(req.body);
+    let doc = await newCar.save(); //La coleccion ya está incluida en la definicion del modelo Car
     console.log(doc);
-    res.json(doc);
+    if (doc) {
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
   } catch (error) {
     console.log("El error es: ", error);
   }
 });
 
-router.get("/cars/getCar", async (req, res) => {
+router.delete("/cars/delete/:code", async (req, res) => {
   try {
-    //console.log(req.query.code);
-    const code = req.query.code;
+    console.log(req.params.code);
+    const code = req.params.code;
+    let doc = await CarModel.findOne({ code }).exec();
+    if (doc) {
+      doc.status = "Inactive";
+      doc = await doc.save();
+      res.json(doc);
+    } else res.json(null);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+router.get("/cars/search/:code", async (req, res) => {
+  try {
+    console.log(req.params.code);
+    const code = req.params.code;
     console.log(code);
-    const doc = await CarModel.findOne({ code }).exec();
+    let doc = await CarModel.findOne({ code }).exec();
     console.log(doc);
     res.json(doc);
   } catch (error) {
@@ -127,7 +131,7 @@ router.post("/signup", async (req, res) => {
 router.post("/clients/add", async (req, res) => {
   try {
     console.log(req.body);
-    const {code, id, email}=req.body;
+    const { code, id, email } = req.body;
     const newClient = new ClientModel(req.body);
     let doc = await ClientModel.find({ $or: [{ code }, { id }, { email }] });
     //Si no hay coincidencias, efectua el alta
@@ -143,14 +147,46 @@ router.post("/clients/add", async (req, res) => {
   }
 });
 
-router.delete('/clients/delete/:code', async (req, res)=>{
-  try{
+router.delete("/clients/delete/:code", async (req, res) => {
+  try {
     console.log(req.params.code);
-    const code=req.params.code;
-    let doc=await ClientModel.findOneAndDelete({code});
-    res.json(doc);    
-  }catch(error){
+    const code = req.params.code;
+    let doc = await ClientModel.findOne({ code }).exec();
+    if (doc) {
+      doc.status = "Inactive";
+      doc = await doc.save();
+      res.json(doc);
+    }
+  } catch (error) {
     console.error(error);
+  }
+});
+
+router.get("/clients/search/:code", async (req, res) => {
+  try {
+    console.log(req.params.code);
+    const code = req.params.code;
+    let doc = await ClientModel.findOne({ code }).exec();
+    res.json(doc);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+router.put("/clients/modify", async (req, res) => {
+  console.log(req.body);
+  const { code, id, name, surname, email, phone } = req.body;
+  let doc = await ClientModel.findOne({ code }).exec();
+  if (doc) {
+    doc.id = id;
+    doc.name = name;
+    doc.surname = surname;
+    doc.email = email;
+    doc.phone = phone;
+    doc = await doc.save();
+    res.json(doc);
+  } else {
+    res.json(null);
   }
 });
 
