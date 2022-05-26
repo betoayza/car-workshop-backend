@@ -48,7 +48,7 @@ router.post("/cars/add", async (req, res) => {
   try {
     console.log(req.body);
     const newCar = new CarModel(req.body);
-    let doc = await newCar.save(); //La coleccion ya está incluida en la definicion del modelo Car
+    let doc = await newCar.save(); 
     console.log(doc);
     if (doc) {
       res.json(doc);
@@ -56,7 +56,7 @@ router.post("/cars/add", async (req, res) => {
       res.json(null);
     }
   } catch (error) {
-    console.log("El error es: ", error);
+    console.error(error);
   }
 });
 
