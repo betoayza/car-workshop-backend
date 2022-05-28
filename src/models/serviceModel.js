@@ -13,7 +13,7 @@ const ServiceSchema = new Schema({
     amount: {type: Number, required: true},  
     carInfo: {type: String, required: true},
     carKms: {type: Number, required: true},
-    carID: {type: String, required: true}
+    carCode: {type: String, required: true}
 },
 {
     collection: 'services'

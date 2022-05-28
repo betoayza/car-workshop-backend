@@ -11,30 +11,35 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
   try {
     //filter car fabrication year < 2017  ( =< 4 years)
     const list1 = await CarModel.find({ year: { $lt: 2017 } }); //.exec()
-    //.then( res => {
-    console.log("Coches menos de 4 años: ", list1);
-    //filter ids
-    const ids_array = list1.map((obj) => obj._id.toString());
-    console.log("Ids de coches encontrados:", ids_array);
-    //filtrar los servicios que tienen los id coches filtrados
-    const services = await ServiceModel.find({ carID: { $in: ids_array } });
-    console.log("Servicios: ", services);
-    //obtener ids de los coches de los servicios
-    const array_aux = services.map((obj) => obj.carID);
-    console.log("IDs de autos resultantes: ", array_aux);
-    //Eliminar los duplicados mediante un Set
-    const setCarIDs = new Set(array_aux);
-    console.log("Resultado aux: ", setCarIDs);
-    //re-convvertir el set a array
-    const array_cars_founded = [...setCarIDs].map((elem) => {
-      const elem2 = mongoose.Types.ObjectId(elem);
-      return elem2;
-    });
-    console.log("Resultado casi final: ", array_cars_founded);
-    //resyltado final
-    const result = await CarModel.find({ _id: { $in: array_cars_founded } });
-    console.log("Resultado final: ", result);
-    res.json(result);
+    if (list1) {
+      console.log("Coches menos de 4 años: ", list1);
+      //filter ids de todos los coches encontrados
+      const ids_array = list1.map((obj) => obj.code);
+      console.log("Ids de coches encontrados:", ids_array);
+
+      //filtrar los servicios que tienen los id coches filtrados, en un array nuevo
+      const services = await ServiceModel.find({ carCode: { $in: ids_array } });
+      if (services) {
+        console.log("Servicios encontrados: ", services);
+
+        //Car ID having that services
+        const arr_id_car_services = services.map((obj) => obj.carCode);
+        console.log("IDs de autos que tienen servicios: ", arr_id_car_services);
+
+        //Remove duplicates converting Array to Set
+        const setCarIDs = new Set(arr_id_car_services);
+        console.log("Resultado sin duplicados (set): ", setCarIDs);
+
+        //Set to array
+        const array_cars_founded = [...setCarIDs];
+        console.log("Resultado casi final: ", array_cars_founded);
+
+        //resyltado final
+        let doc = await CarModel.find({ _id: { $in: array_cars_founded } });
+        console.log("Resultado final: ", doc);
+        res.json(doc);
+      } else res.json(null);
+    } else res.json(null);
   } catch (error) {
     console.error(error);
   }
@@ -47,11 +52,19 @@ router.get("/cars/search/brand-model", (req, res) => {
 router.post("/cars/add", async (req, res) => {
   try {
     console.log(req.body);
+    const { patent } = req.body;
     const newCar = new CarModel(req.body);
-    let doc = await newCar.save(); 
+    //patent cant match
+    let doc = await CarModel.findOne({ patent }).exec();
     console.log(doc);
-    if (doc) {
-      res.json(doc);
+    if (!doc) {
+      doc = await newCar.save();
+      console.log(doc);
+      if (doc) {
+        res.json(doc);
+      } else {
+        res.json(doc);
+      }
     } else {
       res.json(null);
     }
