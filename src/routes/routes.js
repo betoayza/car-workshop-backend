@@ -9,8 +9,8 @@ const router = Router();
 //router for  list with all cars with more 3 years old and just 1 service done
 router.get("/cars/search/lists/carlist1", async (req, res) => {
   try {
-    //filter car fabrication year < 2017  ( =< 4 years)
-    const list1 = await CarModel.find({ year: { $lt: 2017 } }); //.exec()
+    //find cars with fabrication year < 2018  ( =< 4 years)
+    const list1 = await CarModel.find({ year: { $lt: 2018 } }); 
     if (list1) {
       console.log("Coches menos de 4 años: ", list1);
       //filter ids de todos los coches encontrados
@@ -22,7 +22,7 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
       if (services) {
         console.log("Servicios encontrados: ", services);
 
-        //Car ID having that services
+        //Car Codes having that services
         const arr_id_car_services = services.map((obj) => obj.carCode);
         console.log("IDs de autos que tienen servicios: ", arr_id_car_services);
 
@@ -43,10 +43,6 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
-
-router.get("/cars/search/brand-model", (req, res) => {
-  const { brand, model } = req.query;
 });
 
 router.post("/cars/add", async (req, res) => {
@@ -119,27 +115,27 @@ router.put("/cars/modify/edit", async (req, res) => {
 });
 
 //Sigup just exists for Admins
-router.post("/signup", async (req, res) => {
-  try {
-    console.log(req.body);
-    const { id, email, username } = req.body;
-    //validate user
-    let doc = await ClientModel.find({
-      $or: [{ id }, { email }, { username }],
-    });
-    if (!doc.length) {
-      //add admin
-      const newUser = new ClientModel(req.body);
-      doc = await newUser.save();
-      console.log("*", doc);
-      res.json(doc);
-    } else {
-      res.json({});
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
+// router.post("/signup", async (req, res) => {
+//   try {
+//     console.log(req.body);
+//     const { id, email, username } = req.body;
+//     //validate user
+//     let doc = await ClientModel.find({
+//       $or: [{ id }, { email }, { username }],
+//     });
+//     if (!doc.length) {
+//       //add admin
+//       const newUser = new ClientModel(req.body);
+//       doc = await newUser.save();
+//       console.log("*", doc);
+//       res.json(doc);
+//     } else {
+//       res.json({});
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 //-----------------CLIENTS
 router.post("/clients/add", async (req, res) => {
   try {
@@ -200,6 +196,27 @@ router.put("/clients/modify", async (req, res) => {
     res.json(doc);
   } else {
     res.json(null);
+  }
+});
+
+//----------------SERVICES------------------
+router.post('/services/add', async (req, res)=>{
+  try{
+  console.log(req.body);
+  const {code, carCode}=req.body;
+  //validate service code 
+  let doc=await ServiceModel.findOne({code}).exec();
+  //validate code car
+  let doc2=await CarModel.findOne({carCode}).exec();
+  if(doc || !doc2){
+    res.json(null);
+  }else{
+    const newService=new ServiceModel(req.body);
+    doc =await newService.save();
+    res.json(doc);
+  }
+  }catch(error){
+    console.error(error);
   }
 });
 

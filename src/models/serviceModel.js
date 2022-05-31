@@ -9,11 +9,12 @@ conn.once('open', () => {
                             
 
 const ServiceSchema = new Schema({
-    date: {type: String, required: true},
+    code: {type: Number, required: true},
+    date: {type: Date, required: true},
     amount: {type: Number, required: true},  
-    carInfo: {type: String, required: true},
+    carCode: {type: Number, required: true},    
     carKms: {type: Number, required: true},
-    carCode: {type: String, required: true}
+    status: {type: String, required: true}
 },
 {
     collection: 'services'
