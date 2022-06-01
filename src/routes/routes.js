@@ -10,7 +10,7 @@ const router = Router();
 router.get("/cars/search/lists/carlist1", async (req, res) => {
   try {
     //find cars with fabrication year < 2018  ( =< 4 years)
-    const list1 = await CarModel.find({ year: { $lt: 2018 } }); 
+    const list1 = await CarModel.find({ year: { $lt: 2018 } });
     if (list1) {
       console.log("Coches menos de 4 años: ", list1);
       //filter ids de todos los coches encontrados
@@ -200,22 +200,41 @@ router.put("/clients/modify", async (req, res) => {
 });
 
 //----------------SERVICES------------------
-router.post('/services/add', async (req, res)=>{
-  try{
-  console.log(req.body);
-  const {code, carCode}=req.body;
-  //validate service code 
-  let doc=await ServiceModel.findOne({code}).exec();
-  //validate code car
-  let doc2=await CarModel.findOne({carCode}).exec();
-  if(doc || !doc2){
-    res.json(null);
-  }else{
-    const newService=new ServiceModel(req.body);
-    doc =await newService.save();
-    res.json(doc);
+router.post("/services/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const { code, carCode } = req.body;
+    //validate service code
+    let doc = await ServiceModel.findOne({ code }).exec();
+    //validate code car
+    let doc2 = await CarModel.findOne({ code: carCode }).exec();
+    if (doc || !doc2) {
+      res.json(null);
+    } else {
+      const newService = new ServiceModel(req.body);
+      doc = await newService.save();
+      res.json(doc);
+    }
+  } catch (error) {
+    console.error(error);
   }
-  }catch(error){
+});
+
+router.delete("/services/delete/:code", async (req, res) => {
+  try {
+    console.log(req.params);
+    const code = req.params.code;
+    console.log(code);
+    let doc = await ServiceModel.findOne({ code }).exec();
+    console.log(doc);
+    if (doc) {
+      doc.status = "Inactive";
+      doc = await doc.save();
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
     console.error(error);
   }
 });
