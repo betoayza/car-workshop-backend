@@ -99,6 +99,7 @@ router.get("/cars/search/:code", async (req, res) => {
 
 router.put("/cars/modify/edit", async (req, res) => {
   try {
+    console.log(req.body);
     const { code, patent, brand, model, year, owner } = req.body.form;
     const doc = await CarModel.findOne({ code }).exec();
     doc.patent = patent;
@@ -141,15 +142,14 @@ router.post("/clients/add", async (req, res) => {
   try {
     console.log(req.body);
     const { code, id, email } = req.body;
-    const newClient = new ClientModel(req.body);
-    let doc = await ClientModel.find({ $or: [{ code }, { id }, { email }] });
-    //Si no hay coincidencias, efectua el alta
-    if (!doc.length) {
+    let doc = await ClientModel.findOne({ $or: [{ code }, { id }, { email }] }).exec();    
+    console.log(doc);
+    if (doc) {
+      res.json(null);
+    } else {      
+      const newClient = new ClientModel(req.body);
       doc = await newClient.save();
       res.json(doc);
-    } else {
-      //si hay coincidencias, no se da el alta
-      res.json({});
     }
   } catch (error) {
     console.error(error);
@@ -161,10 +161,13 @@ router.delete("/clients/delete/:code", async (req, res) => {
     console.log(req.params.code);
     const code = req.params.code;
     let doc = await ClientModel.findOne({ code }).exec();
+    console.log(doc);
     if (doc) {
       doc.status = "Inactive";
       doc = await doc.save();
       res.json(doc);
+    }else{
+      res.json(null);
     }
   } catch (error) {
     console.error(error);
@@ -211,7 +214,7 @@ router.post("/services/add", async (req, res) => {
     if (doc || !doc2) {
       res.json(null);
     } else {
-      const newService = new ServiceModel(req.body);
+      const newService = new ServiceModel(req.body);      
       doc = await newService.save();
       res.json(doc);
     }
@@ -236,6 +239,37 @@ router.delete("/services/delete/:code", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
+  }
+});
+
+
+router.get("/services/search/:code", async (req, res) => {
+  try {
+    console.log(req.params.code);
+    const code = req.params.code;
+    console.log(code);
+    let doc = await ServiceModel.findOne({ code }).exec();
+    console.log(doc);
+    res.json(doc);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+router.put("/services/modify", async (req, res) => {
+  console.log(req.body);
+  const { code, amount, carCode, work, carKms } = req.body;
+  
+  let doc = await ServiceModel.findOne({ code }).exec();
+  if (doc) {    
+    doc.amount = amount;
+    doc.carCode = carCode;
+    doc.work = work;
+    doc.carKms = carKms;   
+    doc = await doc.save();
+    res.json(doc);
+  } else {
+    res.json(null);
   }
 });
 
