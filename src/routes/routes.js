@@ -40,7 +40,7 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
           let num = await ServiceModel.count({ carCode: code })
           console.log(num);
           if (num === 1) {
-            return code
+            return code;
           };
         });
         let result_oneService=await Promise.all(oneService);
