@@ -2,7 +2,8 @@ import express from 'express';
 import routes from './routes/routes.js';
 import cors from 'cors';
 import morgan from 'morgan';
-import bodyParser from 'body-parser';
+
+const PORT=process.env.PORT || 5000;
 
 const app = express();
 
@@ -19,8 +20,7 @@ app.use(cors());
 //Use the logger package we have imported to get the log details of our application if needed.
 app.use(morgan('dev'));
 
-
-app.listen(5000, () => {
+app.listen(PORT, () => {
     console.log('Servidor corriendo en puerto 5000...');
 });
 
