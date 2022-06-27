@@ -15,7 +15,7 @@ app.use(express.urlencoded({
 
 app.use(routes);
 
-app.use(cors());
+app.use(cors({ origin: true }));
 
 //Use the logger package we have imported to get the log details of our application if needed.
 app.use(morgan('dev'));
