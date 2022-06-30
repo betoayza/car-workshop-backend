@@ -6,9 +6,9 @@ import ServiceModel from "../models/serviceModel.js";
 
 const router = Router();
 
-router.get('/', (req. res)=>{
-  res.send({status: 'Server running on 5000'});
-});
+// router.get('/', (req, res)=>{
+//   res.send({status: 'Server running on 5000 :)'});
+// });
 
 //router for  list with all cars with more 3 years old and just 1 service done
 router.get("/cars/search/lists/carlist1", async (req, res) => {

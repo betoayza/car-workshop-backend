@@ -20,6 +20,18 @@ app.use(cors({ origin: true }));
 //Use the logger package we have imported to get the log details of our application if needed.
 app.use(morgan('dev'));
 
+app.get('/', (req, res, next) => {
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            name: 'name of your app',
+            version: '0.1.0'
+        }
+    });
+
+});
+
 app.listen(PORT, () => {
     console.log('Servidor corriendo en puerto 5000...');    
 });
