@@ -1,14 +1,9 @@
 import { Router } from "express";
-import mongoose from "mongoose";
 import CarModel from "../models/carModel.js";
 import ClientModel from "../models/clientModel.js";
 import ServiceModel from "../models/serviceModel.js";
 
 const router = Router();
-
-// router.get('/', (req, res)=>{
-//   console.log("Server running on 5000");
-// });
 
 //router for  list with all cars with more 3 years old and just 1 service done
 router.get("/cars/search/lists/carlist1", async (req, res) => {
@@ -41,15 +36,18 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
         //Filter by only 1 service
 
         let oneService = carCodes.map(async (code) => {
-          let num = await ServiceModel.count({ carCode: code })
+          let num = await ServiceModel.count({ carCode: code });
           console.log(num);
           if (num === 1) {
             return code;
-          };
+          }
         });
-        let result_oneService=await Promise.all(oneService);
+        let result_oneService = await Promise.all(oneService);
         console.log(result_oneService);
-        console.log("Filtrados por un solo servicio hecho: ", result_oneService);
+        console.log(
+          "Filtrados por un solo servicio hecho: ",
+          result_oneService
+        );
 
         //Final result
         let doc = await CarModel.find({ code: { $in: result_oneService } });

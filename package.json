@@ -7,7 +7,6 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
-    "moment": "^2.29.3",
     "mongoose": "^6.3.0",
     "morgan": "^1.10.0"
   },
