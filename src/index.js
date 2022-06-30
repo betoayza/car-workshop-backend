@@ -25,8 +25,7 @@ app.get('/', (req, res, next) => {
     res.status(200).json({
         status: 'success',
         data: {
-            name: 'name of your app',
-            version: '0.1.0'
+            name: 'Server running on port 5000 :)'            
         }
     });
 
