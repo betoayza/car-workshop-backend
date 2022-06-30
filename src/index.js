@@ -21,6 +21,6 @@ app.use(cors({ origin: true }));
 app.use(morgan('dev'));
 
 app.listen(PORT, () => {
-    console.log('Servidor corriendo en puerto 5000...');
+    console.log('Servidor corriendo en puerto 5000...');    
 });
 
