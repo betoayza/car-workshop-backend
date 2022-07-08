@@ -117,15 +117,15 @@ router.put("/api/cars/modify", async (req, res) => {
     console.log(req.body);
     const { code, patent, brand, model, year, owner } = req.body.form;
     let doc = await CarModel.findOne({ code }).exec();
-    if(doc){
+    if (doc) {
       doc.patent = patent;
       doc.brand = brand;
       doc.model = model;
       doc.year = year;
       doc.owner = owner;
-      doc = await doc.save();    
+      doc = await doc.save();
       res.json(doc);
-    }else{
+    } else {
       res.json(null);
     }
   } catch (error) {
@@ -162,7 +162,7 @@ router.post("/api/clients/add", async (req, res) => {
     const { code, id, email } = req.body;
     let doc = await ClientModel.findOne({
       $or: [{ code }, { id }, { email }],
-    }).exec();    
+    }).exec();
     if (doc) {
       res.json(null);
     } else {
@@ -175,14 +175,14 @@ router.post("/api/clients/add", async (req, res) => {
   }
 });
 
-router.delete("/clients/delete/:code", async (req, res) => {
+router.delete("/api/clients/delete", async (req, res) => {
   try {
-    console.log(req.params.code);
-    const code = req.params.code;
+    console.log(req.body);
+    const { code } = req.body;
     let doc = await ClientModel.findOne({
       $and: [{ code }, { status: "Active" }],
     }).exec();
-    console.log(doc);
+
     if (doc) {
       doc.status = "Inactive";
       doc = await doc.save();
