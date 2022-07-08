@@ -5,8 +5,8 @@ import ServiceModel from "../models/serviceModel.js";
 
 const router = Router();
 
-router.get("/", (req, res)=>{
-  console.log("asd");
+router.get("/api", (req, res) => {
+  res.send("Server running on port 5000!");
 });
 
 //router for  list with all cars with more 3 years old and just 1 service done
@@ -64,34 +64,28 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
   }
 });
 
-router.post("/cars/add", async (req, res) => {
+router.post("/api/cars/add", async (req, res) => {
   try {
     console.log(req.body);
     const { patent } = req.body;
     const newCar = new CarModel(req.body);
-    //patent cant match
     let doc = await CarModel.findOne({ patent }).exec();
-    console.log(doc);
-    if (!doc) {
-      doc = await newCar.save();
-      console.log(doc);
-      if (doc) {
-        res.json(doc);
-      } else {
-        res.json(doc);
-      }
-    } else {
+    if (doc) {
       res.json(null);
+    } else {
+      doc = await newCar.save();
+      res.json(doc);
     }
   } catch (error) {
     console.error(error);
   }
 });
 
-router.delete("/cars/delete/:code", async (req, res) => {
+router.delete(`/api/cars/delete`, async (req, res) => {
   try {
-    console.log(req.params.code);
-    const code = req.params.code;
+    console.log(req.body);
+    const { code } = req.body;
+    console.log(code);
     let doc = await CarModel.findOne({
       $and: [{ code }, { status: "Active" }],
     }).exec();
@@ -105,10 +99,10 @@ router.delete("/cars/delete/:code", async (req, res) => {
   }
 });
 
-router.get("/cars/search/:code", async (req, res) => {
+router.get("/api/cars/search", async (req, res) => {
   try {
-    console.log(req.params.code);
-    const code = req.params.code;
+    console.log(req.query);
+    const { code } = req.query;
     console.log(code);
     let doc = await CarModel.findOne({ code }).exec();
     console.log(doc);

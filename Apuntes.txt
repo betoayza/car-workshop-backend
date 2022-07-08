@@ -1,7 +1,0 @@
-*   Checkear si el resultado de una query tiene algo:
-            let resultado = Model.find(....)    
-            //caso no sea nulo
-            if (resultado.hasNext()) {
-                ...
-            }
-         bgjntyhnjg
