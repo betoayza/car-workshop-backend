@@ -156,14 +156,13 @@ router.put("/api/cars/modify", async (req, res) => {
 //   }
 // });
 //-----------------CLIENTS
-router.post("/clients/add", async (req, res) => {
+router.post("/api/clients/add", async (req, res) => {
   try {
     console.log(req.body);
     const { code, id, email } = req.body;
     let doc = await ClientModel.findOne({
       $or: [{ code }, { id }, { email }],
-    }).exec();
-    console.log(doc);
+    }).exec();    
     if (doc) {
       res.json(null);
     } else {
