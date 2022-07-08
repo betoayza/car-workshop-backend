@@ -112,19 +112,22 @@ router.get("/api/cars/search", async (req, res) => {
   }
 });
 
-router.put("/cars/modify/edit", async (req, res) => {
+router.put("/api/cars/modify", async (req, res) => {
   try {
     console.log(req.body);
     const { code, patent, brand, model, year, owner } = req.body.form;
-    const doc = await CarModel.findOne({ code }).exec();
-    doc.patent = patent;
-    doc.brand = brand;
-    doc.model = model;
-    doc.year = year;
-    doc.owner = owner;
-    const doc2 = await doc.save();
-    console.log("Data updated!: ", doc2);
-    res.json(doc2);
+    let doc = await CarModel.findOne({ code }).exec();
+    if(doc){
+      doc.patent = patent;
+      doc.brand = brand;
+      doc.model = model;
+      doc.year = year;
+      doc.owner = owner;
+      doc = await doc.save();    
+      res.json(doc);
+    }else{
+      res.json(null);
+    }
   } catch (error) {
     console.error(error);
   }
