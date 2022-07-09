@@ -195,20 +195,26 @@ router.delete("/api/clients/delete", async (req, res) => {
   }
 });
 
-router.get("/clients/search/:code", async (req, res) => {
+router.get("/api/clients/search", async (req, res) => {
   try {
-    console.log(req.params.code);
-    const code = req.params.code;
-    let doc = await ClientModel.findOne({ code }).exec();
-    res.json(doc);
+    console.log(req.query);
+    const { code } = req.query;
+    let doc = await ClientModel.findOne({
+      $and: [{ code }, { status: "Active" }],
+    }).exec();
+    if (doc) {
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
   } catch (error) {
     console.error(error);
   }
 });
 
-router.put("/clients/modify", async (req, res) => {
-  console.log(req.body.form);
-  const { code, id, name, surname, email, phone } = req.body.form;
+router.put("/api/clients/modify", async (req, res) => {
+  console.log(req.body);
+  const { code, id, name, surname, email, phone } = req.body;
   let doc = await ClientModel.findOne({ code }).exec();
   console.log(doc);
   if (doc) {
