@@ -104,7 +104,9 @@ router.get("/api/cars/search", async (req, res) => {
     console.log(req.query);
     const { code } = req.query;
     console.log(code);
-    let doc = await CarModel.findOne({ code }).exec();
+    let doc = await CarModel.findOne({
+      $and: [{ code }, { status: "Active" }],
+    }).exec();
     console.log(doc);
     res.json(doc);
   } catch (error) {
