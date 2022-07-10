@@ -117,7 +117,7 @@ router.get("/api/cars/search", async (req, res) => {
 router.put("/api/cars/modify", async (req, res) => {
   try {
     console.log(req.body);
-    const { code, patent, brand, model, year, owner } = req.body.form;
+    const { code, patent, brand, model, year, owner } = req.body;
     let doc = await CarModel.findOne({ code }).exec();
     if (doc) {
       doc.patent = patent;
