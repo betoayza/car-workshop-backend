@@ -67,20 +67,18 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
 router.post("/api/cars/add", async (req, res) => {
   try {
     console.log(req.body);
-    const { patent, name, lastName } = req.body;
-    const newCar = new CarModel(req.body);
+    const { patent, clientCode } = req.body;
     //validate patent (never matchs)
     let doc = await CarModel.findOne({ patent }).exec();
     if (doc) {
       res.json(null);
     } else {
-      //validate client exists
-      doc = await ClientModel.findOne({
-        $and: [{ name }, { lastName }],
-      }).exec();
-      if(doc){
+      //validate client code exists
+      doc = await ClientModel.findOne({ code: clientCode }).exec();
+      if (doc) {
+        const newCar = new CarModel(req.body);
         doc = await newCar.save();
-      }else{
+      } else {
         res.json(null);
       }
       res.json(doc);
@@ -126,14 +124,13 @@ router.get("/api/cars/search", async (req, res) => {
 router.put("/api/cars/modify", async (req, res) => {
   try {
     console.log(req.body);
-    const { code, patent, brand, model, year, owner } = req.body;
+    const { code, patent, brand, model, year } = req.body;
     let doc = await CarModel.findOne({ code }).exec();
     if (doc) {
       doc.patent = patent;
       doc.brand = brand;
       doc.model = model;
       doc.year = year;
-      doc.owner = owner;
       doc = await doc.save();
       res.json(doc);
     } else {
