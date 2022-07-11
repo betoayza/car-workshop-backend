@@ -67,13 +67,22 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
 router.post("/api/cars/add", async (req, res) => {
   try {
     console.log(req.body);
-    const { patent } = req.body;
+    const { patent, name, lastName } = req.body;
     const newCar = new CarModel(req.body);
+    //validate patent (never matchs)
     let doc = await CarModel.findOne({ patent }).exec();
     if (doc) {
       res.json(null);
     } else {
-      doc = await newCar.save();
+      //validate client exists
+      doc = await ClientModel.findOne({
+        $and: [{ name }, { lastName }],
+      }).exec();
+      if(doc){
+        doc = await newCar.save();
+      }else{
+        res.json(null);
+      }
       res.json(doc);
     }
   } catch (error) {
