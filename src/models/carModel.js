@@ -17,7 +17,8 @@ const carSchema = new Schema(
     brand: { type: String, required: true },
     model: { type: String, required: true },
     year: { type: Number, required: true },
-    clientCode: { type: Number, required: true },    
+    clientCode: { type: Number, required: true },  
+    status: { type: String, required: true }  
   },
   {
     collection: "cars",

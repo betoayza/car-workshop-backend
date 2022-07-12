@@ -78,10 +78,10 @@ router.post("/api/cars/add", async (req, res) => {
       if (doc) {
         const newCar = new CarModel(req.body);
         doc = await newCar.save();
+        res.json(doc);
       } else {
         res.json(null);
       }
-      res.json(doc);
     }
   } catch (error) {
     console.error(error);
@@ -114,8 +114,12 @@ router.get("/api/cars/search", async (req, res) => {
     let doc = await CarModel.findOne({
       $and: [{ code }, { status: "Active" }],
     }).exec();
-    console.log(doc);
-    res.json(doc);
+    if (doc) {
+      console.log(doc);
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -134,6 +138,23 @@ router.put("/api/cars/modify", async (req, res) => {
       doc = await doc.save();
       res.json(doc);
     } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+router.get("/api/cars/all", async (req, res) => {
+  try {
+    console.log(req.query);
+    const { code } = req.query;
+    console.log(code);
+    let doc = await CarModel.find({});
+    if (doc.length) {
+      console.log(doc);
+      res.json(doc);
+    }else{
       res.json(null);
     }
   } catch (error) {
