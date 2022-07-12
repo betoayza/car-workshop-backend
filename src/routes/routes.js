@@ -1,4 +1,5 @@
 import { Router } from "express";
+import AdminModel from "../models/adminModel.js";
 import CarModel from "../models/carModel.js";
 import ClientModel from "../models/clientModel.js";
 import ServiceModel from "../models/serviceModel.js";
@@ -162,28 +163,45 @@ router.get("/api/cars/all", async (req, res) => {
   }
 });
 
-//Sigup just exists for Admins
-// router.post("/signup", async (req, res) => {
-//   try {
-//     console.log(req.body);
-//     const { id, email, username } = req.body;
-//     //validate user
-//     let doc = await ClientModel.find({
-//       $or: [{ id }, { email }, { username }],
-//     });
-//     if (!doc.length) {
-//       //add admin
-//       const newUser = new ClientModel(req.body);
-//       doc = await newUser.save();
-//       console.log("*", doc);
-//       res.json(doc);
-//     } else {
-//       res.json({});
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+//SIGNUP & LOGIN FOR ADMINS
+router.post("/signup", async (req, res) => {
+  try {
+    console.log(req.body);
+    const { code, username } = req.body;
+    //validate user
+    let doc = await AdmintModel.findOne({
+      $or: [{ code }, { username }],
+    }).exec();
+    if (doc) {
+      res.json(null);
+    } else {
+      //add admin
+      const newAdmin = new AdminModel(req.body);
+      doc = await newAdmin.save();
+      res.json(doc);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+router.get("/login", async (req, res) => {
+  try {
+    console.log(req.query);
+    const { username, password } = req.query;
+    let doc = await AdminModel.findOne({
+      $and: [{ username }, { password }],
+    }).exec();
+    if (doc) {
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 //-----------------CLIENTS
 router.post("/api/clients/add", async (req, res) => {
   try {
