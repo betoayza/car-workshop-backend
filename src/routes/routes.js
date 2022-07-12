@@ -154,7 +154,7 @@ router.get("/api/cars/all", async (req, res) => {
     if (doc.length) {
       console.log(doc);
       res.json(doc);
-    }else{
+    } else {
       res.json(null);
     }
   } catch (error) {
@@ -259,6 +259,23 @@ router.put("/api/clients/modify", async (req, res) => {
   }
 });
 
+router.get("/api/clients/all", async (req, res) => {
+  try {
+    console.log(req.query);
+    const { code } = req.query;
+    console.log(code);
+    let doc = await ClientModel.find({});
+    if (doc.length) {
+      console.log(doc);
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 //----------------SERVICES------------------
 router.post("/services/add", async (req, res) => {
   try {
@@ -328,6 +345,23 @@ router.put("/services/modify", async (req, res) => {
     res.json(doc);
   } else {
     res.json(null);
+  }
+});
+
+router.get("/api/services/all", async (req, res) => {
+  try {
+    console.log(req.query);
+    const { code } = req.query;
+    console.log(code);
+    let doc = await ServiceModel.find({});
+    if (doc.length) {
+      console.log(doc);
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.error(error);
   }
 });
 
