@@ -296,13 +296,13 @@ router.get("/api/clients/all", async (req, res) => {
 });
 
 //----------------SERVICES------------------
-router.post("/services/add", async (req, res) => {
+router.post("/api/services/add", async (req, res) => {
   try {
     console.log(req.body);
     const { code, carCode } = req.body;
     //validate service code
     let doc = await ServiceModel.findOne({ code }).exec();
-    //validate code car
+    //validate car code
     let doc2 = await CarModel.findOne({ code: carCode }).exec();
     if (doc || !doc2) {
       res.json(null);
@@ -316,16 +316,16 @@ router.post("/services/add", async (req, res) => {
   }
 });
 
-router.delete("/services/delete/:code", async (req, res) => {
+router.delete("/api/services/delete", async (req, res) => {
   try {
-    console.log(req.params);
-    const code = req.params.code;
+    console.log(req.body);
+    const { code } = req.body;
     console.log(code);
     let doc = await ServiceModel.findOne({
       $and: [{ code }, { status: "Active" }],
     }).exec();
-    console.log(doc);
     if (doc) {
+      console.log(doc);
       doc.status = "Inactive";
       doc = await doc.save();
       res.json(doc);
@@ -382,6 +382,6 @@ router.get("/api/services/all", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+}); //working
 
 export default router;
