@@ -337,14 +337,20 @@ router.delete("/api/services/delete", async (req, res) => {
   }
 });
 
-router.get("/services/search/:code", async (req, res) => {
+router.get("/api/services/search", async (req, res) => {
   try {
-    console.log(req.params.code);
-    const code = req.params.code;
+    console.log(req.query);
+    const { code } = req.query;
     console.log(code);
-    let doc = await ServiceModel.findOne({ code }).exec();
-    console.log(doc);
-    res.json(doc);
+    let doc = await ServiceModel.findOne({
+      $and: [{ code }, { status: "Active" }],
+    }).exec();
+    if (doc) {
+      console.log(doc);
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
   } catch (error) {
     console.error(error);
   }
