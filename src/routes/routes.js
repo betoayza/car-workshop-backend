@@ -10,7 +10,7 @@ router.get("/api", (req, res) => {
   res.send("Server running on port 5000!");
 });
 
-//router for  list with all cars with more 3 years old and just 1 service done
+//Cars with more 3 years old and just 1 service done
 router.get("/api/cars/search/lists/CarsList1", async (req, res) => {
   try {
     //find cars with fabrication year < 2019  ( <= 3 years)
@@ -18,11 +18,11 @@ router.get("/api/cars/search/lists/CarsList1", async (req, res) => {
     if (less4year.length) {
       console.log("Cars with less than 4 years: ", less4year);
 
-      //filter ids de todos los coches encontrados
+      //Cars codes matched
       const codes_array = less4year.map((obj) => obj.code);
       console.log("Cars codes matched:", codes_array);
 
-      //filtrar los servicios que tienen los id coches coicidentes, en un array nuevo
+      //Services with cars codes matched
       const carServices = await ServiceModel.find({
         carCode: { $in: codes_array },
       });
