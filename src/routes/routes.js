@@ -11,34 +11,28 @@ router.get("/api", (req, res) => {
 });
 
 //router for  list with all cars with more 3 years old and just 1 service done
-router.get("/cars/search/lists/carlist1", async (req, res) => {
+router.get("/api/cars/search/lists/CarsList1", async (req, res) => {
   try {
-    //find cars with fabrication year < 2019  ( < 4 years)
+    //find cars with fabrication year < 2019  ( <= 3 years)
     const less4year = await CarModel.find({ year: { $lt: 2019 } });
-    if (less4year) {
-      console.log("Coches menos de 4 años: ", less4year);
+    if (less4year.length) {
+      console.log("Cars with less than 4 years: ", less4year);
 
       //filter ids de todos los coches encontrados
       const codes_array = less4year.map((obj) => obj.code);
-      console.log("Ids de coches encontrados:", codes_array);
+      console.log("Cars codes matched:", codes_array);
 
       //filtrar los servicios que tienen los id coches coicidentes, en un array nuevo
       const carServices = await ServiceModel.find({
         carCode: { $in: codes_array },
       });
 
-      if (carServices) {
-        console.log("Servicios encontrados: ", carServices);
+      if (carServices.length) {
+        console.log("Services matched: ", carServices);
 
         //Filter car codes
         const carCodes = carServices.map((obj) => obj.carCode);
-        console.log(
-          "Codes de autos que tienen servicios encontrados: ",
-          carCodes
-        );
-
-        //---------------Arreglar
-        //Filter by only 1 service
+        console.log("Car codes with services: ", carCodes);
 
         let oneService = carCodes.map(async (code) => {
           let num = await ServiceModel.count({ carCode: code });
@@ -47,13 +41,13 @@ router.get("/cars/search/lists/carlist1", async (req, res) => {
             return code;
           }
         });
+
         let result_oneService = await Promise.all(oneService);
         console.log(result_oneService);
         console.log(
           "Filtrados por un solo servicio hecho: ",
           result_oneService
         );
-
         //Final result
         let doc = await CarModel.find({ code: { $in: result_oneService } });
         console.log("Resultado final: ", doc);
@@ -302,19 +296,21 @@ router.post("/api/services/add", async (req, res) => {
     const { code, carCode } = req.body;
     //validate service code
     let doc = await ServiceModel.findOne({ code }).exec();
-    //validate car code
-    let doc2 = await CarModel.findOne({ code: carCode }).exec();
-    if (doc || !doc2) {
-      res.json(null);
-    } else {
+    //validate car
+    let doc2 = await CarModel.findOne({
+      $and: [{ code: carCode }, { status: "Active" }],
+    }).exec();
+    if (!doc && doc2) {
       const newService = new ServiceModel(req.body);
       doc = await newService.save();
       res.json(doc);
+    } else {
+      res.json(null);
     }
   } catch (error) {
     console.error(error);
   }
-});
+}); //working
 
 router.delete("/api/services/delete", async (req, res) => {
   try {
@@ -335,7 +331,7 @@ router.delete("/api/services/delete", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+}); //working
 
 router.get("/api/services/search", async (req, res) => {
   try {
@@ -354,22 +350,29 @@ router.get("/api/services/search", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+}); //working
 
-router.put("/services/modify", async (req, res) => {
-  console.log(req.body);
-  const { code, amount, carCode, work, carKms } = req.body;
+router.put("/api/services/modify", async (req, res) => {
+  try {
+    console.log(req.body);
+    const { code, amount, carCode, work, carKms } = req.body;
 
-  let doc = await ServiceModel.findOne({ code }).exec();
-  if (doc) {
-    doc.amount = amount;
-    doc.carCode = carCode;
-    doc.work = work;
-    doc.carKms = carKms;
-    doc = await doc.save();
-    res.json(doc);
-  } else {
-    res.json(null);
+    let doc = await ServiceModel.findOne({
+      $and: [{ code }, { carCode }],
+    }).exec();
+    if (doc) {
+      console.log(doc);
+      doc.amount = amount;
+      doc.carCode = carCode;
+      doc.work = work;
+      doc.carKms = carKms;
+      doc = await doc.save();
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.error(error);
   }
 });
 
