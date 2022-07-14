@@ -45,12 +45,12 @@ router.get("/api/cars/search/lists/CarsList1", async (req, res) => {
         let result_oneService = await Promise.all(oneService);
         console.log(result_oneService);
         console.log(
-          "Filtrados por un solo servicio hecho: ",
+          "Just 1 service done: ",
           result_oneService
         );
         //Final result
         let doc = await CarModel.find({ code: { $in: result_oneService } });
-        console.log("Resultado final: ", doc);
+        console.log("Final Result: ", doc);
         res.json(doc);
       } else res.json(null);
     } else res.json(null);
@@ -374,7 +374,7 @@ router.put("/api/services/modify", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+}); //working
 
 router.get("/api/services/all", async (req, res) => {
   try {
