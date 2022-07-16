@@ -44,10 +44,7 @@ router.get("/api/cars/search/lists/CarsList1", async (req, res) => {
 
         let result_oneService = await Promise.all(oneService);
         console.log(result_oneService);
-        console.log(
-          "Just 1 service done: ",
-          result_oneService
-        );
+        console.log("Just 1 service done: ", result_oneService);
         //Final result
         let doc = await CarModel.find({ code: { $in: result_oneService } });
         console.log("Final Result: ", doc);
@@ -124,8 +121,11 @@ router.put("/api/cars/modify", async (req, res) => {
   try {
     console.log(req.body);
     const { code, patent, brand, model, year } = req.body;
-    let doc = await CarModel.findOne({$and: [{ code }, {status: "Active"}]}).exec();   
-    if (doc) {
+    let doc = await CarModel.findOne({
+      $and: [{ code }, { status: "Active" }],
+    }).exec();
+    let doc2 = await CarModel.findOne({ patent }).exec(); //validate patent
+    if (doc && !doc2) {
       doc.patent = patent;
       doc.brand = brand;
       doc.model = model;
