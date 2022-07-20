@@ -6,9 +6,9 @@ import ServiceModel from "../models/serviceModel.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.send("Server running on port 5000!");
-});
+// router.get("/", (req, res) => {
+//   res.send("Server running on port 5000!");
+// });
 
 //Cars with more 3 years old and just 1 service done
 router.get("/api/cars/search/lists/CarsList1", async (req, res) => {
