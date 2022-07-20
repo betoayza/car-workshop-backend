@@ -20,16 +20,16 @@ app.use(cors());
 //Use the logger package we have imported to get the log details of our application if needed.
 app.use(morgan('dev'));
 
-app.get('/', (req, res, next) => {
+// app.get('/', (req, res, next) => {
 
-    res.status(200).json({
-        status: 'success',
-        data: {
-            name: 'Server running on port 5000 :)'            
-        }
-    });
+//     res.status(200).json({
+//         status: 'success',
+//         data: {
+//             name: 'Server running on port 5000 :)'            
+//         }
+//     });
 
-});
+// });
 
 app.get("/favicon.ico", (req, res) => res.status(204));
 
