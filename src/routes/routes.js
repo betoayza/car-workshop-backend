@@ -6,6 +6,7 @@ import ClientModel from "../models/clientModel.js";
 import ServiceModel from "../models/serviceModel.js";
 
 const router = Router();
+const app = express();
 
 app.use(cors());
 app.options('*', cors());
