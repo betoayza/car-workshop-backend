@@ -31,7 +31,7 @@ app.get('/', (req, res, next) => {
 
 });
 
-app.get("/favicon.ico", (req, res) => res.status(204));
+// app.get("/favicon.ico", (req, res) => res.status(204));
 
 
 app.listen(PORT, () => {

@@ -10,6 +10,8 @@ const router = Router();
 //   res.send("Server running on port 5000!");
 // });
 
+router.get("/favicon.ico", (req, res) => res.status(204));
+
 //Cars with more 3 years old and just 1 service done
 router.get("/api/cars/search/lists/CarsList1", async (req, res) => {
   try {
