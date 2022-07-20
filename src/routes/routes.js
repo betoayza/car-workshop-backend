@@ -13,7 +13,7 @@ const router = Router();
 router.get("/favicon.ico", (req, res) => res.status(204));
 
 //Cars with more 3 years old and just 1 service done
-router.get("/api/cars/search/lists/CarsList1", async (req, res) => {
+router.get("/cars/search/lists/CarsList1", async (req, res) => {
   try {
     //find cars with fabrication year < 2019  ( <= 3 years)
     const less4year = await CarModel.find({ year: { $lt: 2019 } });
