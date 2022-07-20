@@ -6,7 +6,7 @@ import ServiceModel from "../models/serviceModel.js";
 
 const router = Router();
 
-router.get("/api", (req, res) => {
+router.get("/", (req, res) => {
   res.send("Server running on port 5000!");
 });
 
@@ -142,9 +142,6 @@ router.put("/api/cars/modify", async (req, res) => {
 
 router.get("/api/cars/all", async (req, res) => {
   try {
-    console.log(req.query);
-    const { code } = req.query;
-    console.log(code);
     let doc = await CarModel.find({});
     if (doc.length) {
       console.log(doc);
@@ -273,9 +270,6 @@ router.put("/api/clients/modify", async (req, res) => {
 
 router.get("/api/clients/all", async (req, res) => {
   try {
-    console.log(req.query);
-    const { code } = req.query;
-    console.log(code);
     let doc = await ClientModel.find({});
     if (doc.length) {
       console.log(doc);
@@ -377,9 +371,6 @@ router.put("/api/services/modify", async (req, res) => {
 
 router.get("/api/services/all", async (req, res) => {
   try {
-    console.log(req.query);
-    const { code } = req.query;
-    console.log(code);
     let doc = await ServiceModel.find({});
     if (doc.length) {
       console.log(doc);
