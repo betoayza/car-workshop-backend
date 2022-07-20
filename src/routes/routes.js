@@ -1,10 +1,14 @@
 import { Router } from "express";
+import cors from 'cors';
 //import AdminModel from "../models/adminModel.js";
 import CarModel from "../models/carModel.js";
 import ClientModel from "../models/clientModel.js";
 import ServiceModel from "../models/serviceModel.js";
 
 const router = Router();
+
+app.use(cors());
+app.options('*', cors());
 
 // router.get("/", (req, res) => {
 //   res.send("Server running on port 5000!");
