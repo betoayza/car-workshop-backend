@@ -68,7 +68,9 @@ router.post("/cars/add", async (req, res) => {
       res.json(null);
     } else {
       //validate client code exists
-      doc = await ClientModel.findOne({ code: clientCode }).exec();
+      doc = await ClientModel.findOne({
+        $and: [{ code: clientCode }, { status: "Active" }],
+      }).exec();
       if (doc) {
         const newCar = new CarModel(req.body);
         doc = await newCar.save();
