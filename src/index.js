@@ -16,7 +16,7 @@ app.use(
 );
 
 var corsOptions = {
-  origin: "https://betoayza.github.io/car-workshop-frontend",
+  origin: "https://betoayza.github.io",
   optionsSuccessStatus: 200,
 };
 
