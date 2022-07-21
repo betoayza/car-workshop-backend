@@ -14,7 +14,7 @@ router.get("/favicon.ico", (req, res) => res.status(204));
 
 //Cars with more 3 years old and just 1 service done
 router.get("/cars/search/lists/1", async (req, res) => {
-  try {    
+  try {
     //find cars with fabrication year < 2019  ( <= 3 years)
     const less4year = await CarModel.find({ year: { $lt: 2019 } });
     if (less4year.length) {
@@ -82,7 +82,7 @@ router.post("/cars/add", async (req, res) => {
   }
 });
 
-router.delete(`/api/cars/delete`, async (req, res) => {
+router.delete("/cars/delete", async (req, res) => {
   try {
     console.log(req.body);
     const { code } = req.body;
@@ -100,7 +100,7 @@ router.delete(`/api/cars/delete`, async (req, res) => {
   }
 });
 
-router.get("/api/cars/search", async (req, res) => {
+router.get("/cars/search", async (req, res) => {
   try {
     console.log(req.query);
     const { code } = req.query;
@@ -119,7 +119,7 @@ router.get("/api/cars/search", async (req, res) => {
   }
 });
 
-router.put("/api/cars/modify", async (req, res) => {
+router.put("/cars/modify", async (req, res) => {
   try {
     console.log(req.body);
     const { code, patent, brand, model, year } = req.body;
@@ -196,7 +196,7 @@ router.get("/cars/all", async (req, res) => {
 // });
 
 //-----------------CLIENTS
-router.post("/api/clients/add", async (req, res) => {
+router.post("/clients/add", async (req, res) => {
   try {
     console.log(req.body);
     const { code, id, email } = req.body;
@@ -215,7 +215,7 @@ router.post("/api/clients/add", async (req, res) => {
   }
 });
 
-router.delete("/api/clients/delete", async (req, res) => {
+router.delete("/clients/delete", async (req, res) => {
   try {
     console.log(req.body);
     const { code } = req.body;
@@ -235,7 +235,7 @@ router.delete("/api/clients/delete", async (req, res) => {
   }
 });
 
-router.get("/api/clients/search", async (req, res) => {
+router.get("/clients/search", async (req, res) => {
   try {
     console.log(req.query);
     const { code } = req.query;
@@ -252,7 +252,7 @@ router.get("/api/clients/search", async (req, res) => {
   }
 });
 
-router.put("/api/clients/modify", async (req, res) => {
+router.put("/clients/modify", async (req, res) => {
   console.log(req.body);
   const { code, id, name, surname, email, phone } = req.body;
   let doc = await ClientModel.findOne({ code }).exec();
@@ -270,7 +270,7 @@ router.put("/api/clients/modify", async (req, res) => {
   }
 });
 
-router.get("/api/clients/all", async (req, res) => {
+router.get("/clients/all", async (req, res) => {
   try {
     let doc = await ClientModel.find({});
     if (doc.length) {
@@ -285,7 +285,7 @@ router.get("/api/clients/all", async (req, res) => {
 });
 
 //----------------SERVICES------------------
-router.post("/api/services/add", async (req, res) => {
+router.post("/services/add", async (req, res) => {
   try {
     console.log(req.body);
     const { code, carCode } = req.body;
@@ -307,7 +307,7 @@ router.post("/api/services/add", async (req, res) => {
   }
 }); //working
 
-router.delete("/api/services/delete", async (req, res) => {
+router.delete("/services/delete", async (req, res) => {
   try {
     console.log(req.body);
     const { code } = req.body;
@@ -328,7 +328,7 @@ router.delete("/api/services/delete", async (req, res) => {
   }
 }); //working
 
-router.get("/api/services/search", async (req, res) => {
+router.get("/services/search", async (req, res) => {
   try {
     console.log(req.query);
     const { code } = req.query;
@@ -347,7 +347,7 @@ router.get("/api/services/search", async (req, res) => {
   }
 }); //working
 
-router.put("/api/services/modify", async (req, res) => {
+router.put("/services/modify", async (req, res) => {
   try {
     console.log(req.body);
     const { code, amount, carCode, work, carKms } = req.body;
@@ -371,7 +371,7 @@ router.put("/api/services/modify", async (req, res) => {
   }
 }); //working
 
-router.get("/api/services/all", async (req, res) => {
+router.get("/services/all", async (req, res) => {
   try {
     let doc = await ServiceModel.find({});
     if (doc.length) {
