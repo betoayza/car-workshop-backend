@@ -59,7 +59,7 @@ router.get("/cars/search/lists/1", async (req, res) => {
   }
 });
 
-router.post("/api/cars/add", async (req, res) => {
+router.post("/cars/add", async (req, res) => {
   try {
     console.log(req.body);
     const { patent, clientCode } = req.body;
@@ -143,7 +143,7 @@ router.put("/api/cars/modify", async (req, res) => {
   }
 });
 
-router.get("/api/cars/all", async (req, res) => {
+router.get("/cars/all", async (req, res) => {
   try {
     let doc = await CarModel.find({});
     if (doc.length) {
