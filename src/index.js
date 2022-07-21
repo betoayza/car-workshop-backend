@@ -15,10 +15,16 @@ app.use(
   })
 );
 
-app.use(routes);
+var corsOptions = {
+  origin: "https://betoayza.github.io/car-workshop-frontend",
+  optionsSuccessStatus: 200,
+};
 
-app.use(cors({ origin: true }));
-// app.options('*', cors())
+app.use(cors(corsOptions));
+
+app.options('*', cors())
+
+app.use(routes);
 
 //Use the logger package we have imported to get the log details of our application if needed.
 app.use(morgan("dev"));
