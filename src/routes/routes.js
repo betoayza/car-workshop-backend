@@ -14,8 +14,7 @@ router.get("/favicon.ico", (req, res) => res.status(204));
 
 //Cars with more 3 years old and just 1 service done
 router.get("/cars/search/lists/1", async (req, res) => {
-  try {
-    res.set('Access-Control-Allow-Origin', '*');
+  try {    
     //find cars with fabrication year < 2019  ( <= 3 years)
     const less4year = await CarModel.find({ year: { $lt: 2019 } });
     if (less4year.length) {
