@@ -208,6 +208,7 @@ router.post("/clients/add", async (req, res) => {
     let doc = await ClientModel.findOne({
       $or: [{ code }, { id }, { email }],
     }).exec();
+    //validate if clients wants rejoin
     let doc2 = await ClientModel.findOne({
       $and: [{ id }, { status: "Inactive" }],
     }).exec();
