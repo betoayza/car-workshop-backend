@@ -131,7 +131,7 @@ router.put("/cars/modify", async (req, res) => {
     }).exec();
 
     let count = await CarModel.count({ patent }); //validate patent
-    if (doc && count===0 || doc.patent===patent) {
+    if ((doc && count === 0) || doc.patent === patent) {
       doc.patent = patent;
       doc.brand = brand;
       doc.model = model;
@@ -204,15 +204,19 @@ router.post("/clients/add", async (req, res) => {
   try {
     console.log(req.body);
     const { code, id, email } = req.body;
+    //validate code, id& email
     let doc = await ClientModel.findOne({
       $or: [{ code }, { id }, { email }],
     }).exec();
-    if (doc) {
-      res.json(null);
-    } else {
+    let doc2 = await ClientModel.findOne({
+      $and: [{ id }, { status: "Inactive" }],
+    }).exec();
+    if (!doc || doc2) {
       const newClient = new ClientModel(req.body);
       doc = await newClient.save();
       res.json(doc);
+    } else {
+      res.json(null);
     }
   } catch (error) {
     console.error(error);
