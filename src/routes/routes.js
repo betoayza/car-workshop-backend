@@ -125,11 +125,13 @@ router.put("/cars/modify", async (req, res) => {
   try {
     console.log(req.body);
     const { code, patent, brand, model, year } = req.body;
+    //validate car exists
     let doc = await CarModel.findOne({
       $and: [{ code }, { status: "Active" }],
     }).exec();
-    let doc2 = await CarModel.findOne({ patent }).exec(); //validate patent
-    if (doc && !doc2) {
+
+    let count = await CarModel.count({ patent }); //validate patent
+    if (doc && count===0 || doc.patent===patent) {
       doc.patent = patent;
       doc.brand = brand;
       doc.model = model;
