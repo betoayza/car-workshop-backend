@@ -222,7 +222,7 @@ router.post("/clients/add", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+}); //working
 
 router.delete("/clients/delete", async (req, res) => {
   try {
