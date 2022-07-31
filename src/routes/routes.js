@@ -26,7 +26,12 @@ router.get("/cars/search/lists/1", async (req, res) => {
 
       //Services with cars codes matched
       const carServices = await ServiceModel.find({
-        carCode: { $in: codes_array },
+        $and: [
+          {
+            carCode: { $in: codes_array },
+          },
+          { status: "Active" },
+        ],
       });
 
       if (carServices.length) {
