@@ -15,14 +15,15 @@ app.use(
   })
 );
 
-var corsOptions = {
-  origin: "https://betoayza.github.io",
-  optionsSuccessStatus: 200,
-};
+// var corsOptions = {
+//   origin: "https://betoayza.github.io",
+//   optionsSuccessStatus: 200,
+// };  
 
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 
-app.options('*', cors())
+//app.options('*', cors())
+app.use(cors());
 
 app.use(routes);
 
