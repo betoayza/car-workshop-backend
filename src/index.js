@@ -20,10 +20,15 @@ app.use(
 //   optionsSuccessStatus: 200,
 // };  
 
-//app.use(cors(corsOptions));
+var corsOptions = {
+  origin: "http://127.0.0.1:4173/car-workshop-frontend/",
+  optionsSuccessStatus: 200,
+}; 
+
+app.use(cors(corsOptions));
 
 app.options('*', cors())
-app.use(cors());
+//app.use(cors());
 
 app.use(routes);
 
