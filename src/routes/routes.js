@@ -238,6 +238,15 @@ router.delete("/clients/delete", async (req, res) => {
     }).exec();
 
     if (doc) {
+      //delete client cars
+      let doc2 = await CarModel.find({ clientCode: code });
+      if (doc2.length) {
+        doc2.forEach(async (car) => {
+          car.status = "Inactive";
+          await car.save();
+        });
+      }
+
       doc.status = "Inactive";
       doc = await doc.save();
       res.json(doc);
@@ -253,9 +262,7 @@ router.get("/clients/search", async (req, res) => {
   try {
     console.log(req.query);
     const { code } = req.query;
-    let doc = await ClientModel.findOne({
-      $and: [{ code }, { status: "Active" }],
-    }).exec();
+    let doc = await ClientModel.findOne({ code }).exec();
     if (doc) {
       res.json(doc);
     } else {
