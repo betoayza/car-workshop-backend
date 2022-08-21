@@ -233,7 +233,9 @@ router.put("/clients/re-add", async (req, res) => {
   try {
     console.log(req.body);
     const { code } = req.body;
-    let doc = await ClientModel.findOne({ code }).exec();
+    let doc = await ClientModel.findOne({
+      $and: [{ code }, { status: "Inactive" }],
+    }).exec();
     if (doc) {
       doc.status = "Active";
       doc = await doc.save();
