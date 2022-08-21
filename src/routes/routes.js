@@ -240,9 +240,8 @@ router.put("/clients/re-add", async (req, res) => {
       let doc2 = await CarModel.find({ clientCode: code });
       console.log(doc2);
       if (doc.length) {
-        doc2 = doc2.map(async (car) => (car.status = "Active"));
-        doc2 = await doc2.save();
-        console.log(doc2);
+        doc2 = doc2.map(async (car) => {car.status = "Active"; await car.save()});
+        //console.log(doc2);
       }
       doc.status = "Active";
       doc = await doc.save();
