@@ -229,6 +229,23 @@ router.post("/clients/add", async (req, res) => {
   }
 }); //working
 
+router.put("/clients/re-add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const { code } = req.body;
+    let doc = await ClientModel.findOne({ code }).exec();
+    if (doc) {
+      doc.status = "Active";
+      doc = await doc.save();
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 router.delete("/clients/delete", async (req, res) => {
   try {
     console.log(req.body);
@@ -271,7 +288,7 @@ router.get("/clients/search", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+}); //working
 
 router.put("/clients/modify", async (req, res) => {
   console.log(req.body);
