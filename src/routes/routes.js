@@ -237,8 +237,9 @@ router.put("/clients/re-add", async (req, res) => {
       $and: [{ code }, { status: "Inactive" }],
     }).exec();
     if (doc) {
+      //Active client cars deleled
       let doc2 = await CarModel.find({ clientCode: code });      
-      if (doc.length) {
+      if (doc2.length) {
         doc2.forEach(async (car) => {
           car.status = "Active";
           await car.save();
