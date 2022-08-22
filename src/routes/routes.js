@@ -91,12 +91,11 @@ router.post("/cars/add", async (req, res) => {
 
 router.delete("/cars/delete", async (req, res) => {
   try {
-    console.log(req.body);
     const { code } = req.body;
-    console.log(code);
     let doc = await CarModel.findOne({
       $and: [{ code }, { status: "Active" }],
     }).exec();
+
     if (doc) {
       doc.status = "Inactive";
       doc = await doc.save();
@@ -109,14 +108,9 @@ router.delete("/cars/delete", async (req, res) => {
 
 router.get("/cars/search", async (req, res) => {
   try {
-    console.log(req.query);
     const { code } = req.query;
-    console.log(code);
-    let doc = await CarModel.findOne({
-      $and: [{ code }, { status: "Active" }],
-    }).exec();
+    let doc = await CarModel.findOne({ code }).exec();
     if (doc) {
-      console.log(doc);
       res.json(doc);
     } else {
       res.json(null);
@@ -231,19 +225,19 @@ router.post("/clients/add", async (req, res) => {
 
 router.put("/clients/re-add", async (req, res) => {
   try {
-    console.log(req.body);
     const { code } = req.body;
     let doc = await ClientModel.findOne({
       $and: [{ code }, { status: "Inactive" }],
     }).exec();
+
     if (doc) {
       //Recover client cars
-      let doc2 = await CarModel.find({ clientCode: code });      
+      let doc2 = await CarModel.find({ clientCode: code });
       if (doc2.length) {
         doc2.forEach(async (car) => {
           car.status = "Active";
           await car.save();
-        });        
+        });
       }
       doc.status = "Active";
       doc = await doc.save();
@@ -254,11 +248,10 @@ router.put("/clients/re-add", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+}); //working
 
 router.delete("/clients/delete", async (req, res) => {
   try {
-    console.log(req.body);
     const { code } = req.body;
     let doc = await ClientModel.findOne({
       $and: [{ code }, { status: "Active" }],
