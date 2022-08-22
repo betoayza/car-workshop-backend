@@ -237,10 +237,12 @@ router.put("/clients/re-add", async (req, res) => {
       $and: [{ code }, { status: "Inactive" }],
     }).exec();
     if (doc) {
-      let doc2 = await CarModel.find({ clientCode: code });
-      console.log(doc2);
+      let doc2 = await CarModel.find({ clientCode: code });      
       if (doc.length) {
-        doc2 = doc2.map(async (car) => {car.status = "Active"; await car.save()});
+        doc2.forEach(async (car) => {
+          car.status = "Active";
+          await car.save();
+        });
         //console.log(doc2);
       }
       doc.status = "Active";
@@ -281,7 +283,7 @@ router.delete("/clients/delete", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+}); //workinng
 
 router.get("/clients/search", async (req, res) => {
   try {
