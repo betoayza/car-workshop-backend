@@ -89,7 +89,7 @@ router.post("/cars/add", async (req, res) => {
   }
 });
 
-router.put("cars/re-add", async (req, res) => {
+router.put("/cars/re-add", async (req, res) => {
   try {
     console.log(req.body);
     const { code } = req.body;
