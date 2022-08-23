@@ -89,6 +89,25 @@ router.post("/cars/add", async (req, res) => {
   }
 });
 
+router.put("cars/re-add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const { code } = req.body;
+    let doc = await CarModel.findOne({
+      $and: [{ code }, { status: "Inactive" }],
+    }).exec();
+    if (doc) {
+      doc.status = "Active";
+      doc = await doc.save();
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 router.delete("/cars/delete", async (req, res) => {
   try {
     const { code } = req.body;
@@ -118,7 +137,7 @@ router.get("/cars/search", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-});
+}); //working
 
 router.put("/cars/modify", async (req, res) => {
   try {
