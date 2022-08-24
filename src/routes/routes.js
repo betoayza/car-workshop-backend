@@ -412,9 +412,7 @@ router.get("/services/search", async (req, res) => {
     console.log(req.query);
     const { code } = req.query;
     console.log(code);
-    let doc = await ServiceModel.findOne({
-      $and: [{ code }, { status: "Active" }],
-    }).exec();
+    let doc = await ServiceModel.findOne({ code }).exec();
     if (doc) {
       console.log(doc);
       res.json(doc);
