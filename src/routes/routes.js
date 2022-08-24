@@ -367,6 +367,25 @@ router.post("/services/add", async (req, res) => {
   }
 }); //working
 
+router.put("/services/re-add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const { code } = req.body;
+    let doc = await ServiceModel.findOne({
+      $and: [{ code }, { status: "Inactive" }],
+    }).exec();
+    if (doc) {
+      doc.status = "Active";
+      doc = await doc.save();
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 router.delete("/services/delete", async (req, res) => {
   try {
     console.log(req.body);
