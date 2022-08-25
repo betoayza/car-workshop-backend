@@ -92,14 +92,20 @@ router.post("/cars/add", async (req, res) => {
 router.put("/cars/re-add", async (req, res) => {
   try {
     console.log(req.body);
-    const { code } = req.body;
-    let doc = await CarModel.findOne({
+    const { code, clientCode } = req.body;
+
+    let car = await CarModel.findOne({
       $and: [{ code }, { status: "Inactive" }],
     }).exec();
-    if (doc) {
-      doc.status = "Active";
-      doc = await doc.save();
-      res.json(doc);
+    
+    let client = await ClientModel.findOne({
+      $and: [{ code: clientCode }, { status: "Active" }],
+    }).exec();
+
+    if (car && client) {
+      car.status = "Active";
+      car = await car.save();
+      res.json(car);
     } else {
       res.json(null);
     }
