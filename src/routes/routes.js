@@ -187,7 +187,7 @@ router.get("/cars/all", async (req, res) => {
 router.get("/cars/search", async (req, res) => {
   try {
     const { term } = req.query;
-    let doc = await CarModel.find({
+    let cars = await CarModel.find({
       $or: [
         { code: { $regex: `${term}`, $options: "i" } },
         { patent: { $regex: `${term}`, $options: "i" } },
@@ -198,8 +198,9 @@ router.get("/cars/search", async (req, res) => {
         { status: { $regex: `${term}`, $options: "i" } },
       ],
     });
-    if (doc.length) {
-      res.json(doc);
+    if (cars.length) {
+      console.log(cars);
+      res.json(cars);
     }
   } catch (error) {
     console.error(error);
