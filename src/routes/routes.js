@@ -187,14 +187,15 @@ router.get("/cars/all", async (req, res) => {
 router.get("/cars/search", async (req, res) => {
   try {
     const { term } = req.query;
+    console.log(term);
     let cars = await CarModel.find({
       $or: [
-        { code: Number(term) },
+        { code: { $convert: { input: term, to: "int" } } },
         { patent: { $regex: `${term}`, $options: "i" } },
         { brand: { $regex: `${term}`, $options: "i" } },
         { model: { $regex: `${term}`, $options: "i" } },
-        { year: Number(term) },
-        { clientCode: Number(term) },
+        { year: { $convert: { input: term, to: "int" } } },
+        { clientCode: { $convert: { input: term, to: "int" } } },
         { status: { $regex: `${term}`, $options: "i" } },
       ],
     });
