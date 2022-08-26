@@ -187,9 +187,9 @@ router.get("/cars/all", async (req, res) => {
 router.get("/cars/search", async (req, res) => {
   try {
     const { term } = req.query;
-    const termNumber = null;
+    let termNumber = null;
 
-    isNaN(Number(term)) ? null : (termNumber = Number(term));
+    isNaN(Number(term)) ? term : (termNumber = Number(term));
 
     console.log(term);
     let cars = await CarModel.find({
