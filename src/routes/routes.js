@@ -194,7 +194,7 @@ router.get("/cars/search", async (req, res) => {
         { brand: { $regex: `${term}`, $options: "i" } },
         { model: { $regex: `${term}`, $options: "i" } },
         { year: Number(term) },
-        { clientCode: Numer(term) },
+        { clientCode: Number(term) },
         { status: { $regex: `${term}`, $options: "i" } },
       ],
     });
