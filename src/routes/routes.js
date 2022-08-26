@@ -97,7 +97,7 @@ router.put("/cars/re-add", async (req, res) => {
     let car = await CarModel.findOne({
       $and: [{ code }, { status: "Inactive" }],
     }).exec();
-    
+
     let client = await ClientModel.findOne({
       $and: [{ code: clientCode }, { status: "Active" }],
     }).exec();
@@ -131,7 +131,7 @@ router.delete("/cars/delete", async (req, res) => {
   }
 });
 
-router.get("/cars/search", async (req, res) => {
+router.get("/cars/search2", async (req, res) => {
   try {
     const { code } = req.query;
     let doc = await CarModel.findOne({ code }).exec();
@@ -143,7 +143,7 @@ router.get("/cars/search", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-}); //working
+}); //pending
 
 router.put("/cars/modify", async (req, res) => {
   try {
@@ -183,6 +183,30 @@ router.get("/cars/all", async (req, res) => {
     console.error(error);
   }
 });
+
+router.get("/cars/search", async (req, res) => {
+  try {
+    const { term } = req.query;
+    let doc = await CarModel.find({
+      $or: [
+        { code: { $regex: `${term}`, $options: "i" } },
+        { patent: { $regex: `${term}`, $options: "i" } },
+        { brand: { $regex: `${term}`, $options: "i" } },
+        { model: { $regex: `${term}`, $options: "i" } },
+        { year: { $regex: `${term}`, $options: "i" } },
+        { clientCode: { $regex: `${term}`, $options: "i" } },
+        { status: { $regex: `${term}`, $options: "i" } },
+      ],
+    });
+    if (doc.length) {
+      res.json(doc);
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}); //working
 
 //SIGNUP & LOGIN FOR ADMINS
 // router.post("/signup", async (req, res) => {
