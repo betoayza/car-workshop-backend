@@ -187,17 +187,19 @@ router.get("/cars/all", async (req, res) => {
 router.get("/cars/search", async (req, res) => {
   try {
     const { term } = req.query;
-    const termNumber = Number(term);
+    const termNumber = null;
+
+    isNaN(Number(term)) ? null : (termNumber = Number(term));
 
     console.log(term);
     let cars = await CarModel.find({
       $or: [
-        {code: { $in: [term, termNumber] }},
+        { code: termNumber },
         { patent: { $regex: `${term}`, $options: "i" } },
         { brand: { $regex: `${term}`, $options: "i" } },
         { model: { $regex: `${term}`, $options: "i" } },
-        {year: { $in: [term, termNumber] }},
-        {clientCode: { $in: [term, termNumber] }},
+        { year: termNumber },
+        { clientCode: termNumber},
         { status: { $regex: `${term}`, $options: "i" } },
       ],
     });
