@@ -187,7 +187,7 @@ router.get("/cars/all", async (req, res) => {
 router.get("/cars/search", async (req, res) => {
   try {
     const { term } = req.query;
-    const termNumber = Number(ter);
+    const termNumber = Number(term);
 
     console.log(term);
     let cars = await CarModel.find({
