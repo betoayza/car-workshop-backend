@@ -199,14 +199,14 @@ router.get("/cars/search", async (req, res) => {
         { brand: { $regex: `${term}`, $options: "i" } },
         { model: { $regex: `${term}`, $options: "i" } },
         { year: termNumber },
-        { clientCode: termNumber},
+        { clientCode: termNumber },
         { status: { $regex: `${term}`, $options: "i" } },
       ],
     });
     if (cars.length) {
       console.log(cars);
       res.json(cars);
-    }
+    } else res.json(null);
   } catch (error) {
     console.error(error);
   }
