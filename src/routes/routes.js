@@ -200,8 +200,6 @@ router.get("/cars/search", async (req, res) => {
     });
     if (doc.length) {
       res.json(doc);
-    } else {
-      res.json(null);
     }
   } catch (error) {
     console.error(error);
