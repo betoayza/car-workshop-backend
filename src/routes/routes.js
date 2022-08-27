@@ -442,15 +442,24 @@ router.delete("/services/delete", async (req, res) => {
 router.get("/services/search", async (req, res) => {
   try {
     console.log(req.query);
-    const { code } = req.query;
-    console.log(code);
-    let doc = await ServiceModel.findOne({ code }).exec();
-    if (doc) {
-      console.log(doc);
-      res.json(doc);
-    } else {
-      res.json(null);
-    }
+    const { term } = req.query;
+    let termNumber = null;
+    isNaN(Number(term)) ? term : (termNumber = Number(term));
+
+    let services = await ServiceModel.find({
+      $or: [
+        { code: termNumber },
+        { date: { $regex: `${term}`, $options: "i" } },
+        { amount: termNumber },
+        { carCode: termNumber },
+        { work: { $regex: `${term}`, $options: "i" } },
+        { carKms: termNumber },
+        { status: { $regex: `${term}`, $options: "i" } },
+      ],
+    });
+
+    if (services.length) res.json(services);
+    else res.json(null);
   } catch (error) {
     console.error(error);
   }
