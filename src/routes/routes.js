@@ -198,6 +198,18 @@ router.get("/cars/search", async (req, res) => {
   }
 }); //working
 
+router.get("/cars/search/one", async (req, res) => {
+  try {
+    console.log(req.query);
+    const { code } = req.query;
+    let car = await CarModel.findOne({ code }).exec();
+    if (car) res.json(car);
+    else res.json(null);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 //SIGNUP & LOGIN FOR ADMINS
 // router.post("/signup", async (req, res) => {
 //   try {
@@ -344,6 +356,18 @@ router.get("/clients/search", async (req, res) => {
   }
 }); //working
 
+router.get("/clients/search/one", async (req, res) => {
+  try {
+    console.log(req.query);
+    const { code } = req.query;
+    let client = await ClientModel.findOne({ code }).exec();
+    if (client) res.json(client);
+    else res.json(null);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 router.put("/clients/modify", async (req, res) => {
   console.log(req.body);
   const { code, id, name, surname, email, phone } = req.body;
@@ -464,6 +488,18 @@ router.get("/services/search", async (req, res) => {
     console.error(error);
   }
 }); //working
+
+router.get("/services/search/one", async (req, res) => {
+  try {
+    console.log(req.query);
+    const { code } = req.query;
+    let service = await ServiceModel.findOne({ code }).exec();
+    if (service) res.json(service);
+    else res.json(null);
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 router.put("/services/modify", async (req, res) => {
   try {
