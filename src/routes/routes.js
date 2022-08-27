@@ -131,20 +131,6 @@ router.delete("/cars/delete", async (req, res) => {
   }
 });
 
-router.get("/cars/search2", async (req, res) => {
-  try {
-    const { code } = req.query;
-    let doc = await CarModel.findOne({ code }).exec();
-    if (doc) {
-      res.json(doc);
-    } else {
-      res.json(null);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}); //pending
-
 router.put("/cars/modify", async (req, res) => {
   try {
     console.log(req.body);
@@ -334,13 +320,25 @@ router.delete("/clients/delete", async (req, res) => {
 router.get("/clients/search", async (req, res) => {
   try {
     console.log(req.query);
-    const { code } = req.query;
-    let doc = await ClientModel.findOne({ code }).exec();
-    if (doc) {
-      res.json(doc);
-    } else {
-      res.json(null);
-    }
+    const { term } = req.query;
+    let termNumber = null;
+    isNaN(Number(term)) ? term : (termNumber = Number(term));
+
+    let clients = await ClientModel.find({
+      $or: [
+        { code: termNumber },
+        { id: termNumber },
+        { name: { $regex: `${term}`, $options: "i" } },
+        { surname: { $regex: `${term}`, $options: "i" } },
+        { email: { $regex: `${term}`, $options: "i" } },
+        { phone: termNumber },
+        { status: { $regex: `${term}`, $options: "i" } },
+      ],
+    });
+
+    if (clients.length) {
+      res.json(clients);
+    } else res.json(null);
   } catch (error) {
     console.error(error);
   }
