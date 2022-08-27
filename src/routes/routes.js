@@ -454,7 +454,7 @@ router.get("/services/search", async (req, res) => {
         { carCode: termNumber },
         { work: { $regex: `${term}`, $options: "i" } },
         { carKms: termNumber },
-        { status: { $regex: `${term}`, $options: "i" } },
+        { status: term },
       ],
     });
 
