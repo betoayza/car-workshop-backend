@@ -452,7 +452,7 @@ router.get("/services/search", async (req, res) => {
         { date: { $regex: `${term}`, $options: "i" } },
         { amount: termNumber },
         { carCode: termNumber },
-        { work: { $regex: `${term}`, $options: "i" } },
+        { work: { $regex: `^${term}`, $options: "i" } },
         { carKms: termNumber },
         { status: term },
       ],
