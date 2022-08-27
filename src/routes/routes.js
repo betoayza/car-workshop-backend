@@ -186,7 +186,7 @@ router.get("/cars/search", async (req, res) => {
         { model: { $regex: `${term}`, $options: "i" } },
         { year: termNumber },
         { clientCode: termNumber },
-        { status: { $regex: `${term}`, $options: "i" } },
+        { status: { $regex: `^${term}`, $options: "i" } },
       ],
     });
     if (cars.length) {
@@ -332,7 +332,7 @@ router.get("/clients/search", async (req, res) => {
         { surname: { $regex: `${term}`, $options: "i" } },
         { email: { $regex: `${term}`, $options: "i" } },
         { phone: termNumber },
-        { status: { $regex: `${term}`, $options: "i" } },
+        { status: { $regex: `^${term}`, $options: "i" } },
       ],
     });
 
