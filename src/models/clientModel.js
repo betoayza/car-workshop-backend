@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-require('dotenv').config();
 
 const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@car-workshop.uwvuy.mongodb.net/car-workshop?retryWrites=true&w=majority`;
 const conn = mongoose.createConnection(URI);
