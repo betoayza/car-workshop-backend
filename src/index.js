@@ -2,7 +2,8 @@ import express from "express";
 import routes from "./routes/routes.js";
 import cors from "cors";
 import morgan from "morgan";
-import { dotenv } from "dotenv";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
@@ -51,4 +52,4 @@ app.listen(PORT, () => {
   console.log("Servidor corriendo en puerto 5000...");
 });
 
-dotenv.config();
+
