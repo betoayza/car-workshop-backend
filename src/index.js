@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import express from "express";
 import routes from "./routes/routes.js";
 import cors from "cors";
@@ -51,5 +49,3 @@ app.get("/", (req, res, next) => {
 app.listen(PORT, () => {
   console.log("Servidor corriendo en puerto 5000...");
 });
-
-
