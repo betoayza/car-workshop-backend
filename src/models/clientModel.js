@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const URI =
-  "mongodb+srv://beto123:superpassw123@car-workshop.uwvuy.mongodb.net/car-workshop?retryWrites=true&w=majority";
+const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@car-workshop.uwvuy.mongodb.net/car-workshop?retryWrites=true&w=majority`;
 const conn = mongoose.createConnection(URI);
 
 conn.once("open", () => {
@@ -10,13 +9,13 @@ conn.once("open", () => {
 });
 
 const ClientSchema = new Schema(
-  {    
-    code: { type: Number, required: true }, 
+  {
+    code: { type: Number, required: true },
     id: { type: Number, required: true },
     name: { type: String, required: true },
     surname: { type: String, required: true },
-    email: { type: String, required: true },    
-    phone: { type: Number, required: true },   
+    email: { type: String, required: true },
+    phone: { type: Number, required: true },
     status: { type: String, required: true },
   },
   {
