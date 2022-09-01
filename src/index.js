@@ -2,7 +2,7 @@ import express from "express";
 import routes from "./routes/routes.js";
 import cors from "cors";
 import morgan from "morgan";
-import dotenv from "dotenv";
+import { dotenv } from "dotenv";
 
 const PORT = process.env.PORT || 5000;
 
@@ -19,12 +19,12 @@ app.use(
 // var corsOptions = {
 //   origin: "https://betoayza.github.io",
 //   optionsSuccessStatus: 200,
-// };  
+// };
 
 // var corsOptions = {
 //   origin: "http://127.0.0.1:4173/car-workshop-frontend/",
 //   optionsSuccessStatus: 200,
-// }; 
+// };
 
 //app.use(cors(corsOptions));
 
