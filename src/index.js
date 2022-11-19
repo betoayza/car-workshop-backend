@@ -1,7 +1,7 @@
 import express from "express";
 import routes from "./routes/routes.js";
 import cors from "cors";
-import morgan from "morgan";
+// import morgan from "morgan";
 
 const PORT = process.env.PORT || 5000;
 
@@ -16,6 +16,7 @@ app.use(
     extended: true,
   })
 );
+
 
 // var corsOptions = {
 //   origin: "https://betoayza.github.io",
@@ -35,7 +36,7 @@ app.use(
 app.use(routes);
 
 //Use the logger package we have imported to get the log details of our application if needed.
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 
 // app.get("/", (req, res, next) => {
 //   res.status(200).json({
