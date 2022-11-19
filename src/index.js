@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+app.use(cors());
+
 app.use(express.json());
 
 app.use(
@@ -28,23 +30,23 @@ app.use(
 //app.use(cors(corsOptions));
 
 //app.options('*', cors())
-app.use(cors());
+
 
 app.use(routes);
 
 //Use the logger package we have imported to get the log details of our application if needed.
 app.use(morgan("dev"));
 
-app.get("/", (req, res, next) => {
-  res.status(200).json({
-    status: "success",
-    data: {
-      name: "Server running on port 5000 :)",
-    },
-  });
-});
+// app.get("/", (req, res, next) => {
+//   res.status(200).json({
+//     status: "success",
+//     data: {
+//       name: "Server running on port 5000 :)",
+//     },
+//   });
+// });
 
-// app.get("/favicon.ico", (req, res) => res.status(204));
+app.get("/favicon.ico", (req, res) => res.status(204));
 
 app.listen(PORT, () => {
   console.log("Servidor corriendo en puerto 5000...");
