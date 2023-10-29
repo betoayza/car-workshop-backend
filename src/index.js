@@ -15,6 +15,7 @@ app.use(
 
 app.use(express.json());
 
+// for POST forms
 app.use(
   express.urlencoded({
     extended: true,

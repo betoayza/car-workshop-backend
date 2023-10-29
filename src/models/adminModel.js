@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose;
 
-const URI =
-  `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@car-workshop.uwvuy.mongodb.net/car-workshop?retryWrites=true&w=majority`;
+const { Schema } = mongoose;
+const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@car-workshop.uwvuy.mongodb.net/car-workshop?retryWrites=true&w=majority`;
 const conn = mongoose.createConnection(URI);
 
 conn.once("open", () => {
@@ -10,10 +9,10 @@ conn.once("open", () => {
 });
 
 const AdminSchema = new Schema(
-  {    
-    code: { type: Number, required: true }, 
+  {
+    code: { type: Number, required: true },
     username: { type: Number, required: true },
-    password: { type: String, required: true }    
+    password: { type: String, required: true },
   },
   {
     collection: "admins",
